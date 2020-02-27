@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace IndyBooks.Models
@@ -13,5 +14,7 @@ namespace IndyBooks.Models
         [Required]
         [DataType(DataType.Currency)]
         public decimal Price { get; set; }
+        public string SKU { get; set; }
+        public Writer Author { get; set; }
     }
 }

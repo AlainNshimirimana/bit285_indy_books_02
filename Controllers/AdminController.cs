@@ -23,7 +23,7 @@ namespace IndyBooks.Controllers
         public ActionResult Search(SearchViewModel search)
         {
             //Full Collection Search
-            IQueryable<Book> foundBooks = _db.Books; //.Include(b => b.Author) ; //<<<< Why do you need this
+            IQueryable<Book> foundBooks = _db.Books.Include(b => b.Author); //.Include(b => b.Author) ; //<<<< Why do you need this
 
             //Partial Title Search
             if (search.Title != null)
@@ -39,16 +39,25 @@ namespace IndyBooks.Controllers
             {
                 //TODO:Create lamda expression to filter collection using the Name property of the Book's Author entity
                 foundBooks = foundBooks
-                             ;
+                           .Where(b => b.Author.Name.Contains(search.AuthorLastName));
             }
             //Priced Between Search (min and max price entered)
             if (search.MinPrice > 0 && search.MaxPrice > 0)
             {
                 foundBooks = foundBooks
+                             
                              .Where(b => b.Price >= search.MinPrice && b.Price <= search.MaxPrice)
                              .OrderByDescending(b => b.Price)
                              ;
             }
+
+            if (search.MaxPrice != 0)
+            {
+                foundBooks = foundBooks
+                    .Where(b => b.Price == search.MaxPrice)
+                    ;
+            }
+
             //Composite Search Results
             return View("SearchResults", foundBooks);
         }
