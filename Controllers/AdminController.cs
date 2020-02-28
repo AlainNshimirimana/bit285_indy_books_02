@@ -39,10 +39,11 @@ namespace IndyBooks.Controllers
             {
                 //TODO:Create lamda expression to filter collection using the Name property of the Book's Author entity
                 foundBooks = foundBooks
-                           .Where(b => b.Author.Name.Contains(search.AuthorLastName));
+                           .Where(b => b.Author.LastName.Contains(search.AuthorLastName))
+                           .OrderBy(b => b.Title);
             }
             //Priced Between Search (min and max price entered)
-            if (search.MinPrice != 0 && search.MaxPrice != 0)
+            if (search.MinPrice >= 0 && search.MaxPrice != 0)
             {
                 foundBooks = foundBooks
                     .Where(b => b.Price >= search.MinPrice && b.Price <= search.MaxPrice)
@@ -55,7 +56,7 @@ namespace IndyBooks.Controllers
                 foundBooks = foundBooks
                     .Where(b => b.Price == search.MaxPrice)
                     ;
-            } */
+            }*/
 
             //Composite Search Results
             return View("SearchResults", foundBooks);
