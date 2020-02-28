@@ -42,21 +42,20 @@ namespace IndyBooks.Controllers
                            .Where(b => b.Author.Name.Contains(search.AuthorLastName));
             }
             //Priced Between Search (min and max price entered)
-            if (search.MinPrice > 0 && search.MaxPrice > 0)
+            if (search.MinPrice != 0 && search.MaxPrice != 0)
             {
                 foundBooks = foundBooks
-                             
-                             .Where(b => b.Price >= search.MinPrice && b.Price <= search.MaxPrice)
-                             .OrderByDescending(b => b.Price)
-                             ;
+                    .Where(b => b.Price >= search.MinPrice && b.Price <= search.MaxPrice)
+                    .OrderByDescending(b => b.Price);
             }
 
+            /*
             if (search.MaxPrice != 0)
             {
                 foundBooks = foundBooks
                     .Where(b => b.Price == search.MaxPrice)
                     ;
-            }
+            } */
 
             //Composite Search Results
             return View("SearchResults", foundBooks);
